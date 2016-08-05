@@ -19,6 +19,7 @@ html {
 body {
   align-content: stretch;
   align-items: stretch;
+  background: #ececec;
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
@@ -62,6 +63,14 @@ header.app-header h1 {
   font-weight: 400;
   font-size: 20px;
   margin: 0;
+}
+
+header.app-header #btnRefresh {
+  background: url(/images/ic_refresh_white_24px.svg) center center no-repeat;
+}
+
+header.app-header #btnAdd {
+  background: url(/images/ic_add_white_24px.svg) center center no-repeat;
 }
 
 .loader {
