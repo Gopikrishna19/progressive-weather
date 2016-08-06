@@ -1,3 +1,3 @@
 A progressive weather web application
 
-[DEMO](my-js-ventures.github.io/progressive-weather)
+[DEMO](https://my-js-ventures.github.io/progressive-weather)
