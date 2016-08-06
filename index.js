@@ -2,61 +2,6 @@
 
   'use strict';
 
-  var initialWeatherForecast = {
-    key: 'newyork',
-    label: 'New York, NY',
-    currently: {
-      time: 1453489481,
-      summary: 'Clear',
-      icon: 'partly-cloudy-day',
-      temperature: 52.74,
-      apparentTemperature: 74.34,
-      precipProbability: 0.20,
-      humidity: 0.77,
-      windBearing: 125,
-      windSpeed: 1.52
-    },
-    daily: {
-      data: [
-        {
-          icon: 'clear-day',
-          temperatureMax: 55,
-          temperatureMin: 34
-        },
-        {
-          icon: 'rain',
-          temperatureMax: 55,
-          temperatureMin: 34
-        },
-        {
-          icon: 'snow',
-          temperatureMax: 55,
-          temperatureMin: 34
-        },
-        {
-          icon: 'sleet',
-          temperatureMax: 55,
-          temperatureMin: 34
-        },
-        {
-          icon: 'fog',
-          temperatureMax: 55,
-          temperatureMin: 34
-        },
-        {
-          icon: 'wind',
-          temperatureMax: 55,
-          temperatureMin: 34
-        },
-        {
-          icon: 'partly-cloudy-day',
-          temperatureMax: 55,
-          temperatureMin: 34
-        }
-      ]
-    }
-  };
-
   var app = {
     isLoading: true,
     visibleCards: {},
@@ -86,6 +31,7 @@
       key: key,
       label: label
     });
+    app.saveSelectedCities();
     app.toggleAddDialog(false);
   });
 
@@ -175,22 +121,27 @@
     localStorage.selectedCities = JSON.stringify(app.selectedCities);
   };
 
-  app.selectedCities = localStorage.selectedCities;
+  app.init = function () {
 
-  if (app.selectedCities) {
-    app.selectedCities = JSON.parse(app.selectedCities);
-    app.selectedCities.forEach(function (city) {
-      app.getForecast(city.key, city.label);
-    });
-  } else {
-    app.updateForecastCard(initialWeatherForecast);
-    app.selectedCities = [
-      {
-        key: initialWeatherForecast.key,
-        label: initialWeatherForecast.label
-      }
-    ];
-    app.saveSelectedCities();
-  }
+    var selectedCities = localStorage.selectedCities;
+
+    if (selectedCities) {
+      app.selectedCities = JSON.parse(selectedCities);
+      app.selectedCities.forEach(function (city) {
+        app.getForecast(city.key, city.label);
+      });
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('./worker.js')
+        .then(function () {
+          console.log('Service Worker Registered');
+        });
+    }
+
+  };
+
+  app.init();
 
 })();
